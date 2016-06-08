@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Vectors
 {
-    class Vector:IComparable,IComparer<Vector>
+    class Vector:IComparable,IComparer<Vector>,IEnumerable<Vector>
     {
         public int Ax { get; private set; }
         public int Ay { get; private set; }
@@ -54,6 +55,8 @@ namespace Vectors
 
         }
 
+       
+
         public override string ToString()
         {
             return string.Format("{0}({1},{2})",Name,Xa,Ya);
@@ -63,6 +66,7 @@ namespace Vectors
         {
             return (Ax*111 - Bx*111 + Bx*By%2);
         }
+        
 
         public override bool Equals(object obj)
         {
@@ -74,5 +78,17 @@ namespace Vectors
             }
         }
 
+        public IEnumerator<Vector> GetEnumerator()
+        {
+            Random rand = new Random();
+            for (int i = 0; i < 100; i++)
+            {
+                yield return new Vector('A','B',rand.Next(0,50), rand.Next(0, 50), rand.Next(0, 50), rand.Next(0, 50));
+            }
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }
